@@ -11,24 +11,25 @@ export function initGlobe() {
   const container = document.getElementById('globe-container');
   
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  const size = Math.min(container.clientWidth, container.clientHeight);
+  renderer.setSize(size, size);
   container.appendChild(renderer.domElement);
   
-  const geometry = new THREE.SphereGeometry(5, 32, 32);
-  const material = new THREE.MeshBasicMaterial({ color: 0x64ffda, wireframe: true });
+  const geometry = new THREE.SphereGeometry(6, 32, 32);
+  const material = new THREE.MeshBasicMaterial({ color: 0x8a2be2, wireframe: true, transparent: true, opacity: 0.3 });
   globe = new THREE.Mesh(geometry, material);
   
   // Create a simplified wireframe
   const wireframeGeometry = new THREE.EdgesGeometry(geometry);
-  const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x64ffda, linewidth: 1 });
+  const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x8a2be2, linewidth: 1, transparent: true, opacity: 0.5 });
   wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
   
   scene.add(wireframe);
   
-  camera.position.z = 15;
+  camera.position.set(2, -2, 15);
   
   window.addEventListener('resize', onWindowResize);
   window.addEventListener('scroll', onScroll);
@@ -37,9 +38,11 @@ export function initGlobe() {
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const container = document.getElementById('globe-container');
+  const size = Math.min(container.clientWidth, container.clientHeight);
+  camera.aspect = 1;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(size, size);
 }
 
 function onScroll() {

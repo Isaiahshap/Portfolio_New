@@ -3,7 +3,7 @@ export function renderHeader() {
     <header class="flex items-center justify-center min-h-screen">
       <div class="flex items-center">
         <div class="relative w-48 h-48 mr-16 parallax" data-speed="-0.2">
-          <img src="/public/yeshayaphoto.png" alt="Yeshaya" class="w-full h-full object-cover rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:rotate-3 animate-float">
+          <img src="/public/yeshayaphoto.png" alt="Yeshaya" class="w-full h-full object-cover rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:rotate-3 animate-drop-in" id="profile-image">
         </div>
         <div class="flex flex-col items-center">
           <h1 class="text-6xl font-bold mb-4">
@@ -16,4 +16,20 @@ export function renderHeader() {
       </div>
     </header>
   `;
+}
+
+export function initHeaderAnimation() {
+  const profileImage = document.getElementById('profile-image');
+  const header = document.querySelector('header');
+
+  window.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY;
+    const headerBottom = header.offsetTop + header.offsetHeight;
+
+    if (scrollPosition > headerBottom - window.innerHeight / 2) {
+      profileImage.classList.add('animate-fly-left');
+    } else {
+      profileImage.classList.remove('animate-fly-left');
+    }
+  });
 }
