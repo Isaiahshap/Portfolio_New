@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initElectricityEffect() {
     const electricityBg = document.getElementById('electricity-bg');
-    const particleCount = 200;
+    const particleCount = 700;
     const particles = [];
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.style.zIndex = '1';
     electricityBg.appendChild(canvas);
 
-    const colors = ['rgba(100, 255, 218, ', 'rgba(147, 112, 219, ', 'rgba(0, 50, 100, ']; // Cyan, Purple, and Dark Blue
+    const colors = ['rgba(100, 255, 218, ', 'rgba(147, 112, 219, ', 'rgba(0, 50, 100, '];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -134,10 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
       lightningProgress = 0;
     });
 
-    function drawElectricity() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const offscreenCanvas = new OffscreenCanvas(canvas.width, canvas.height);
+    const offscreenCtx = offscreenCanvas.getContext('2d');
 
-      const mouseRadius = 200;
+    function drawElectricity() {
+      offscreenCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const mouseRadius = 100;
+      const mouseConnectRadius = 90;
       const currentTime = performance.now();
 
       if (isLightning) {
@@ -153,6 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const maxDistance = isLightning ? Math.max(canvas.width, canvas.height) * lightningProgress : mouseRadius;
 
+      const centerX = isLightning ? clickX : mouseX;
+      const centerY = isLightning ? clickY : mouseY;
+
       for (let i = 0; i < particles.length; i++) {
         const particle = particles[i];
 
@@ -162,34 +169,57 @@ document.addEventListener('DOMContentLoaded', () => {
         if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
         if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
 
-        const centerX = isLightning ? clickX : mouseX;
-        const centerY = isLightning ? clickY : mouseY;
-
         const dx = centerX - particle.x;
         const dy = centerY - particle.y;
         const distanceToCenter = Math.hypot(dx, dy);
+
+        let isConnected = false;
 
         if (distanceToCenter < maxDistance) {
           for (let j = i + 1; j < particles.length; j++) {
             const otherParticle = particles[j];
             const particleDistance = Math.hypot(particle.x - otherParticle.x, particle.y - otherParticle.y);
 
-            if (particleDistance < 100) {
-              ctx.beginPath();
-              ctx.moveTo(particle.x, particle.y);
-              ctx.lineTo(otherParticle.x, otherParticle.y);
-              ctx.strokeStyle = isLightning ? 'rgba(255, 255, 255, 0.8)' : `${particle.color}0.2)`;
-              ctx.lineWidth = isLightning ? 1 : 0.5;
-              ctx.stroke();
+            if (particleDistance < 80) {
+              isConnected = true;
+              offscreenCtx.beginPath();
+              offscreenCtx.moveTo(particle.x, particle.y);
+              offscreenCtx.lineTo(otherParticle.x, otherParticle.y);
+              const alpha = isLightning ? 0.4 : 0.5;
+              offscreenCtx.strokeStyle = isLightning ? `rgba(255, 255, 255, ${alpha})` : `${particle.color}${alpha})`;
+              offscreenCtx.lineWidth = isLightning ? 0.8 : 0.4;
+              offscreenCtx.stroke();
             }
+          }
+
+          if (distanceToCenter < mouseConnectRadius) {
+            offscreenCtx.beginPath();
+            offscreenCtx.moveTo(particle.x, particle.y);
+            offscreenCtx.lineTo(centerX, centerY);
+            const alpha = isLightning ? 0.4 : 0.8;
+            offscreenCtx.strokeStyle = isLightning ? `rgba(255, 255, 255, ${alpha})` : `${particle.color}${alpha})`;
+            offscreenCtx.lineWidth = isLightning ? 0.8 : 0.4;
+            offscreenCtx.stroke();
           }
         }
 
-        ctx.fillStyle = `${particle.color}0.6)`;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fill();
+        const particleAlpha = isConnected ? 0.9 : 0.4;
+        const particleRadius = isConnected ? particle.radius * 1.2 : particle.radius;
+        offscreenCtx.fillStyle = `${particle.color}${particleAlpha})`;
+        offscreenCtx.beginPath();
+        offscreenCtx.arc(particle.x, particle.y, particleRadius, 0, Math.PI * 2);
+        offscreenCtx.fill();
+
+        if (isConnected) {
+          offscreenCtx.beginPath();
+          offscreenCtx.arc(particle.x, particle.y, particleRadius * 1.2, 0, Math.PI * 2);
+          offscreenCtx.fillStyle = `${particle.color}0.05)`;
+          offscreenCtx.fill();
+        }
       }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(offscreenCanvas, 0, 0);
 
       requestAnimationFrame(drawElectricity);
     }
@@ -199,6 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', debounce(() => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      offscreenCanvas.width = canvas.width;
+      offscreenCanvas.height = canvas.height;
     }, 250));
   }
 
