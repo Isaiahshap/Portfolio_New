@@ -12,12 +12,8 @@
 .interactive-letter {
   display: inline-block;
   transition: transform 0.3s ease, text-shadow 0.3s ease;
-  cursor: grab;
+  cursor: default;
   user-select: none;
-}
-
-.interactive-letter:active {
-  cursor: grabbing;
 }
 
 #electricity-bg {
@@ -57,5 +53,235 @@
     background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 50px 50px;
   }
+}
+
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#navbar {
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: rgb(var(--color-highlight));
+}
+
+.scroll-indicator {
+  width: 30px;
+  height: 50px;
+  border: 2px solid #fff;
+  border-radius: 25px;
+  position: relative;
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.scroll-indicator-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scroll-animate 1.5s infinite;
+}
+
+@keyframes scroll-animate {
+  0%, 100% {
+    top: 10%;
+  }
+  50% {
+    top: 70%;
+  }
+}
+
+.scroll-indicator-hidden {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.perspective {
+  perspective: 1000px;
+}
+
+.cube {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s, opacity 1s;
+  transform: translateX(100vw) rotateY(-90deg);
+  opacity: 0;
+  margin: 0 auto;
+}
+
+.cube-face {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  opacity: 0.7;
+  overflow: hidden;
+}
+
+.cube-face-front  { transform: rotateY(0) translateZ(150px); }
+.cube-face-back   { transform: rotateY(180deg) translateZ(150px); }
+.cube-face-right  { transform: rotateY(90deg) translateZ(150px); }
+.cube-face-left   { transform: rotateY(-90deg) translateZ(150px); }
+.cube-face-top    { transform: rotateX(90deg) translateZ(150px); }
+.cube-face-bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+.cube-content {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.cube.show {
+  transform: translateX(0) rotateY(0);
+  opacity: 1;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3d3d3d #1e1e1e;
+}
+
+.bg-light-blue {
+  background-color: rgba(30, 41, 59, 0.7);
+}
+
+.text-highlight {
+  color: #8a2be2;
+}
+
+.border-highlight {
+  border-color: #8a2be2;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.category {
+  flex: 1 1 100%;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.skill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.skill:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skill-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s;
+}
+
+.skill:hover .skill-icon {
+  transform: rotate(10deg) scale(1.1);
+}
+
+.skill span {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+.skill-item {
+  transition: transform 0.3s ease;
+}
+
+.skill-item:hover {
+  transform: scale(1.1);
+}
+
+#skills-section {
+  position: relative;
+  overflow: hidden;
+}
+
+#skills-container {
+  position: relative;
+}
+
+#skills-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#skills-container div {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
 }
 

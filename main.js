@@ -4,30 +4,25 @@ import { renderHeader, initHeaderAnimation } from './Components/header.js';
 import { renderAbout } from './Components/about.js';
 import { renderProjects } from './Components/projects.js';
 import { renderContact } from './Components/contact.js';
+import { renderSkillsSection, initSkillsGlobe } from './Components/skills.js';
+import { renderGlobe, initGlobe } from './Components/globe.js';
 import { initParallax } from './Components/parallax.js';
 import { initInteractiveText } from './Components/interactiveText.js';
-import { renderGlobe, initGlobe } from './Components/globe.js';
-import { renderCodeAnimation, initCodeAnimation } from './Components/codeAnimation.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.querySelector('#app');
   app.innerHTML = `
     ${renderNavbar()}
     ${renderHeader()}
-    <div class="container mx-auto relative mt-16 mb-16 z-0" style="height: 1000px;">
-      <div class="absolute inset-0 flex items-center justify-center" style="width: 100%; height: 100%;">
-        ${renderGlobe()}
-      </div>
-      <div class="relative z-10 w-full md:w-2/3 lg:w-1/2 mx-auto" style="padding-top: 200px;">
-        ${renderCodeAnimation()}
-      </div>
-    </div>
+    ${renderSkillsSection()}
     <div class="container mx-auto px-4 py-8">
       ${renderAbout()}
       ${renderProjects()}
       ${renderContact()}
     </div>
   `;
+
+  initSkillsGlobe();
 
   // Mouse tracking animation
   const cursor = document.getElementById('cursor');
@@ -61,10 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initParallax();
   initInteractiveText();
-  initGlobe();
   initHeaderAnimation();
   initNavbarAnimation();
-  initCodeAnimation();
 
   function initDotHoverEffect() {
     const dots = document.querySelectorAll('.dot');
@@ -84,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initElectricityEffect() {
     const electricityBg = document.getElementById('electricity-bg');
-    const particleCount = 700;
+    const particleCount = 1000;
     const particles = [];
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -234,6 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 250));
   }
 
+  initElectricityEffect();
+
   function throttle(func, limit) {
     let inThrottle;
     return function() {
@@ -258,6 +253,4 @@ document.addEventListener('DOMContentLoaded', () => {
       timeout = setTimeout(later, wait);
     };
   }
-
-  initElectricityEffect();
 });

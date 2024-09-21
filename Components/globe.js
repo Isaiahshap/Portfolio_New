@@ -18,7 +18,7 @@ export function initGlobe() {
   renderer.setSize(size, size);
   container.appendChild(renderer.domElement);
   
-  const geometry = new THREE.SphereGeometry(6, 32, 32);
+  const geometry = new THREE.SphereGeometry(2, 32, 32);
   const material = new THREE.MeshBasicMaterial({ color: 0x8a2be2, wireframe: true, transparent: true, opacity: 0.3 });
   globe = new THREE.Mesh(geometry, material);
   
@@ -28,13 +28,16 @@ export function initGlobe() {
   wireframe = new THREE.LineSegments(wireframeGeometry, wireframeMaterial);
   
   scene.add(wireframe);
+  scene.add(globe);
   
-  camera.position.set(2, -2, 15);
+  camera.position.set(0, 0, 8);
   
   window.addEventListener('resize', onWindowResize);
   window.addEventListener('scroll', onScroll);
   
   animate();
+
+  return { scene, globe, wireframe };
 }
 
 function onWindowResize() {
