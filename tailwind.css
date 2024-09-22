@@ -250,38 +250,172 @@ body {
   transform: rotate(10deg) scale(1.1);
 }
 
-.skill span {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #fff;
-}
-
-.skill-item {
-  transition: transform 0.3s ease;
-}
-
-.skill-item:hover {
-  transform: scale(1.1);
-}
-
-#skills-section {
-  position: relative;
-  overflow: hidden;
-}
-
-#skills-container {
-  position: relative;
-}
-
-#skills-container canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 #skills-container div {
   color: #fff;
   font-size: 14px;
   font-weight: 500;
+}
+
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(20px, -20px) scale(1.1); }
+  50% { transform: translate(-20px, 20px) scale(0.9); }
+  75% { transform: translate(20px, 20px) scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.stars, .stars2, .stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.stars {
+  background: url('/path/to/stars1.png') repeat top center;
+  z-index: -3;
+}
+
+.stars2 {
+  background: url('/path/to/stars2.png') repeat top center;
+  z-index: -2;
+}
+
+.stars3 {
+  background: url('/path/to/stars3.png') repeat top center;
+  z-index: -1;
+}
+
+.planets {
+  background: url('/path/to/planets.png') repeat-x center center;
+  background-size: contain;
+  animation: move-planets 60s linear infinite;
+}
+
+.space-objects {
+  background: url('/path/to/space-objects.png') repeat-x center center;
+  background-size: contain;
+  animation: move-space-objects 30s linear infinite;
+}
+
+@keyframes move-planets {
+  from { background-position: 0 center; }
+  to { background-position: -1000px center; }
+}
+
+@keyframes move-space-objects {
+  from { background-position: 0 center; }
+  to { background-position: -500px center; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out forwards;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+.bg-stars {
+  background: url('/path/to/stars1.png') repeat top center;
+  z-index: -3;
+}
+
+.bg-particles {
+  background: url('/path/to/particles-background.png') repeat top center;
+  z-index: -2;
+}
+
+.to-gray-900 {
+  --tw-gradient-to: #1a1a1a;
+}
+
+.to-black {
+  --tw-gradient-to: #000;
+}
+
+.glassmorphic-bg {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.bg-gradient-to-l {
+  background-image: linear-gradient(to left, var(--tw-gradient-stops));
+}
+
+.from-transparent {
+  --tw-gradient-from: transparent;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(0, 0, 0, 0));
+}
+
+.to-blue-500 {
+  --tw-gradient-to: #3b82f6;
+}
+
+.to-purple-500 {
+  --tw-gradient-to: #8b5cf6;
+}
+
+.space-gradient {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(138, 43, 226, 0.3) 0%,
+    rgba(30, 144, 255, 0.15) 30%,
+    rgba(30, 144, 255, 0.05) 60%,
+    rgba(30, 144, 255, 0) 100%
+  );
+  opacity: 0.8;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
 }
 

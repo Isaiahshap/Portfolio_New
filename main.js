@@ -4,8 +4,8 @@ import { renderHeader, initHeaderAnimation } from './Components/header.js';
 import { renderAbout } from './Components/about.js';
 import { renderProjects } from './Components/projects.js';
 import { renderContact } from './Components/contact.js';
-import { renderSkillsSection, initSkillsGlobe } from './Components/skills.js';
-import { renderGlobe, initGlobe } from './Components/globe.js';
+// Remove the following line
+// import { renderGlobe, initGlobe } from './Components/globe.js';
 import { initParallax } from './Components/parallax.js';
 import { initInteractiveText } from './Components/interactiveText.js';
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   app.innerHTML = `
     ${renderNavbar()}
     ${renderHeader()}
-    ${renderSkillsSection()}
+
     <div class="container mx-auto px-4 py-8">
       ${renderAbout()}
       ${renderProjects()}
@@ -22,7 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `;
 
-  initSkillsGlobe();
+  // Remove the following line
+  // initGlobe();
 
   // Mouse tracking animation
   const cursor = document.getElementById('cursor');
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initInteractiveText();
   initHeaderAnimation();
   initNavbarAnimation();
+  initAboutAnimation();
 
   function initDotHoverEffect() {
     const dots = document.querySelectorAll('.dot');
@@ -254,3 +256,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 });
+
+function initAboutAnimation() {
+  const aboutSection = document.getElementById('about');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        aboutSection.style.opacity = '1';
+        aboutSection.style.transform = 'translateY(0)';
+      } else {
+        aboutSection.style.opacity = '0';
+        aboutSection.style.transform = 'translateY(20px)';
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '-100px 0px'
+  });
+
+  observer.observe(aboutSection);
+}
