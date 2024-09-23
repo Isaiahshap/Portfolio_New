@@ -1,3 +1,5 @@
+import { smoothScroll } from '../main.js';
+
 export function renderNavbar() {
   return `
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 opacity-0 transform -translate-y-full">
@@ -34,5 +36,15 @@ export function initNavbarAnimation() {
     }
 
     lastScrollTop = scrollPosition <= 0 ? 0 : scrollPosition;
+  });
+
+  // Add event listeners for smooth scrolling
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('href');
+      smoothScroll(target, 1000);
+    });
   });
 }

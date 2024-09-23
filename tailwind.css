@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -221,12 +223,6 @@ body {
   gap: 2rem;
 }
 
-.category {
-  flex: 1 1 100%;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
 .skill {
   display: flex;
   flex-direction: column;
@@ -411,11 +407,66 @@ body {
     rgba(138, 43, 226, 0.3) 0%,
     rgba(30, 144, 255, 0.15) 30%,
     rgba(30, 144, 255, 0.05) 60%,
-    rgba(30, 144, 255, 0) 100%
+    rgba(30, 144, 255, 0) 80%
   );
   opacity: 0.8;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  backdrop-filter: none; /* Remove blur */
+  -webkit-backdrop-filter: none; /* Remove blur */
+  box-shadow: none; /* Remove box shadow */
+}
+
+.shooting-stars-container {
+  overflow: hidden;
+}
+
+.shooting-star {
+  position: absolute;
+  width: 2px;
+  height: 100px;
+  background: linear-gradient(45deg, white, rgba(255, 255, 255, 0));
+  opacity: 0;
+  transform: rotate(315deg); /* Flipped 180 degrees from 135deg */
+  animation: shooting-star 2s ease-out infinite;
+}
+
+@keyframes shooting-star {
+  0% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) rotate(315deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(500px) translateY(500px) rotate(315deg);
+  }
+}
+
+.about-me {
+  font-family: 'Quicksand', sans-serif;
+  color: white;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.about-me.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.about-me.hidden {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.interactive-letter {
+  display: inline-block;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  cursor: default;
+  user-select: none;
+}
+
+.interactive-letter:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 

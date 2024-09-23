@@ -4,26 +4,51 @@ import { renderHeader, initHeaderAnimation } from './Components/header.js';
 import { renderAbout } from './Components/about.js';
 import { renderProjects } from './Components/projects.js';
 import { renderContact } from './Components/contact.js';
-// Remove the following line
-// import { renderGlobe, initGlobe } from './Components/globe.js';
 import { initParallax } from './Components/parallax.js';
 import { initInteractiveText } from './Components/interactiveText.js';
+
+function smoothScroll(target, duration = 1000) {
+  const targetElement = document.querySelector(target);
+  if (!targetElement) return;
+
+  const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  let startTime = null;
+
+  function animation(currentTime) {
+    if (startTime === null) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const run = ease(timeElapsed, startPosition, distance, duration);
+    window.scrollTo(0, run);
+    if (timeElapsed < duration) requestAnimationFrame(animation);
+  }
+
+  function ease(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return c / 2 * t * t + b;
+    t--;
+    return -c / 2 * (t * (t - 2) - 1) + b;
+  }
+
+  requestAnimationFrame(animation);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.querySelector('#app');
   app.innerHTML = `
     ${renderNavbar()}
     ${renderHeader()}
-
     <div class="container mx-auto px-4 py-8">
       ${renderAbout()}
       ${renderProjects()}
       ${renderContact()}
     </div>
+    <div id="rocket" class="rocket">🚀</div>
   `;
 
-  // Remove the following line
-  // initGlobe();
+  console.log('App innerHTML set'); // Debugging log
+  console.log(document.querySelector('#about')); // Debugging log
 
   // Mouse tracking animation
   const cursor = document.getElementById('cursor');
@@ -59,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initInteractiveText();
   initHeaderAnimation();
   initNavbarAnimation();
-  initAboutAnimation();
+  initAboutAnimation(); // Ensure this is called
+  initShootingStars();
 
   function initDotHoverEffect() {
     const dots = document.querySelectorAll('.dot');
@@ -255,24 +281,87 @@ document.addEventListener('DOMContentLoaded', () => {
       timeout = setTimeout(later, wait);
     };
   }
+
+  function initShootingStars() {
+    const aboutSection = document.getElementById('about');
+    const shootingStarsContainer = document.querySelector('.shooting-stars-container');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startShootingStars();
+        } else {
+          stopShootingStars();
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '-100px 0px'
+    });
+
+    observer.observe(aboutSection);
+
+    let shootingStarsInterval;
+
+    function startShootingStars() {
+      shootingStarsInterval = setInterval(createShootingStar, 500);
+    }
+
+    function stopShootingStars() {
+      clearInterval(shootingStarsInterval);
+    }
+
+    function createShootingStar() {
+      const star = document.createElement('div');
+      star.classList.add('shooting-star');
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      shootingStarsContainer.appendChild(star);
+
+      setTimeout(() => {
+        shootingStarsContainer.removeChild(star);
+      }, 2000);
+    }
+  }
+
+  initShootingStars();
+
+  function initAboutAnimation() {
+    const aboutSection = document.getElementById('about');
+    aboutSection.classList.add('visible'); // Force visibility for debugging
+    aboutSection.classList.remove('hidden'); // Remove hidden class for debugging
+  }
+
+  initAboutAnimation();
+
+  function initRocketAnimation() {
+    const rocket = document.getElementById('rocket');
+    const maxX = window.innerWidth - 24;
+    const maxY = window.innerHeight - 24;
+
+    function moveRocket() {
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+      const rotation = Math.random() * 360;
+
+      rocket.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+
+      setTimeout(moveRocket, Math.random() * 3000 + 2000);
+    }
+
+    moveRocket();
+  }
+
+  initRocketAnimation();
+
+  const aboutSection = document.querySelector('.about-me');
+  if (aboutSection) {
+    console.log('About section found');
+    aboutSection.classList.add('visible');
+    console.log('Visible class added');
+  } else {
+    console.log('About section not found');
+  }
 });
 
-function initAboutAnimation() {
-  const aboutSection = document.getElementById('about');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        aboutSection.style.opacity = '1';
-        aboutSection.style.transform = 'translateY(0)';
-      } else {
-        aboutSection.style.opacity = '0';
-        aboutSection.style.transform = 'translateY(20px)';
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '-100px 0px'
-  });
-
-  observer.observe(aboutSection);
-}
+export { smoothScroll };
