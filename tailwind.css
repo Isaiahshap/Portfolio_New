@@ -470,3 +470,45 @@ body {
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
+@keyframes fly-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fly-in-right {
+  animation: fly-in-right 1s ease-out forwards;
+}
+
+@keyframes fade-in-bounce-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-bounce-up {
+  animation: fade-in-bounce-up 1s ease-out forwards;
+}
+
+.text-light-blue {
+  color: #ADD8E6; /* Light Blue */
+}
+
+.text-light-orange {
+  color: #FFA07A; /* Light Orange */
+}
+

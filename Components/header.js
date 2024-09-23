@@ -6,13 +6,13 @@ export function renderHeader() {
           <img src="/public/yeshayaphoto.png" alt="Yeshaya" class="w-full h-full object-cover rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:rotate-3 animate-drop-in" id="profile-image">
         </div>
         <div class="flex flex-col items-center">
-          <h1 class="text-6xl mb-4 no-select font-light" style="font-family: 'Quicksand', sans-serif;">
+          <h1 class="text-8xl mb-4 no-select font-light" style="font-family: 'Quicksand', sans-serif;">
             ${Array.from("Hi, ").map(letter => `<span class="interactive-letter">${letter}</span>`).join('')}
             ${Array.from("I'm ").map(letter => `<span class="interactive-letter">${letter}</span>`).join('')}
             ${Array.from("Yeshaya").map(letter => `<span class="interactive-letter text-purple-500">${letter}</span>`).join('')}
             <span class="interactive-letter">.</span>
           </h1>
-          <h2 class="text-lg text-highlight tracking-wider mb-6 no-select font-light" style="font-family: 'Quicksand', sans-serif;">
+          <h2 class="text-2xl text-highlight tracking-wider mb-6 no-select font-light text-light-orange" style="font-family: 'Quicksand', sans-serif;">
             ${Array.from("I make interactive and satisfying web applications.").map(letter => `<span class="interactive-letter">${letter === ' ' ? '&nbsp;' : letter}</span>`).join('')}
           </h2>
         </div>

@@ -6,6 +6,7 @@ import { renderProjects } from './Components/projects.js';
 import { renderContact } from './Components/contact.js';
 import { initParallax } from './Components/parallax.js';
 import { initInteractiveText } from './Components/interactiveText.js';
+import ScrollMagic from 'scrollmagic';
 
 function smoothScroll(target, duration = 1000) {
   const targetElement = document.querySelector(target);
@@ -80,11 +81,30 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(el);
   });
 
+  // Initialize ScrollMagic Controller
+  const controller = new ScrollMagic.Controller();
+
+  // Define ScrollMagic scenes
+  new ScrollMagic.Scene({
+    triggerElement: '#projects',
+    triggerHook: 0.9,
+    reverse: false
+  })
+  .setClassToggle('#projects', 'visible')
+  .addTo(controller);
+
+  new ScrollMagic.Scene({
+    triggerElement: '#contact',
+    triggerHook: 0.9,
+    reverse: false
+  })
+  .setClassToggle('#contact', 'visible')
+  .addTo(controller);
+
   initParallax();
   initInteractiveText();
   initHeaderAnimation();
   initNavbarAnimation();
-  initAboutAnimation(); // Ensure this is called
   initShootingStars();
 
   function initDotHoverEffect() {
